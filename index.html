@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandi Vilai — Market Prices for Farmers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --earth-dark: #2A2520;
+  --forest-deep: #1F3A34;
+  --terracotta: #C15C3B;
+  --terracotta-light: #E8A895;
+  --sage: #6B8E7F;
+  --sand: #F5F1ED;
+  --cream: #FAFAF8;
+  --copper: #A67C52;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --border-color: #E5E5E5;
+  --success-green: #2D5A47;
+  --alert-red: #9B4B3C;
+  
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.1);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, #FAFAF8 0%, #F5F1ED 100%);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ========== CONTAINER ========== */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop: Two-column layout */
+@media (min-width: 1024px) {
+  .container {
+    flex-direction: row;
+  }
+  
+  .header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .screen-container {
+    margin-left: 50%;
+    width: 50%;
+    min-height: 100vh;
+  }
+}
+
+/* Mobile: Single column */
+@media (max-width: 1023px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+/* ========== HEADER ========== */
+.header {
+  background: linear-gradient(135deg, var(--forest-deep) 0%, #1a2f2a 100%);
+  color: white;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+  .header {
+    position: relative;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+  }
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 24px;
+  font-family: var(--font-display);
+  z-index: 1;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 1023px) {
+  .logo {
+    margin-bottom: 0;
+  }
+}
+
+.logo-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(193, 92, 59, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.header-content {
+  flex: 1;
+  z-index: 1;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+@media (max-width: 1023px) {
+  .header-title {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+  
+  .header-content {
+    display: none;
+  }
+}
+
+.header-subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.header-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1023px) {
+  .header-stats {
+    display: none;
+  }
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+}
+
+.lang-switch {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.lang-switch:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+select.lang-switch {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'><path d='M5.25 7.5L10 12.25L14.75 7.5H5.25Z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 14px;
+}
+
+select.lang-switch option {
+  color: var(--text-primary);
+  background: white;
+}
+
+/* ========== SCREEN CONTAINER ========== */
+.screen-container {
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* ========== SCREENS ========== */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease-out;
+  max-width: 100%;
+}
+
+.screen.hidden { display: none; }
+.hidden { display: none !important; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.screen-content {
+  flex: 1;
+  padding: 40px 28px;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .screen-content {
+    padding: 32px 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .screen-content {
+    padding: 60px 80px;
+    justify-content: center;
+  }
+}
+
+/* ========== HERO SECTION ========== */
+.hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hero-graphic {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, rgba(193, 92, 59, 0.15), rgba(107, 142, 127, 0.15));
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  border: 2px solid rgba(193, 92, 59, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.hero p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+/* ========== FORM STYLES ========== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 18px;
+  z-index: 1;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 16px;
+  background: white;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(193, 92, 59, 0.1);
+}
+
+.input-field::placeholder {
+  color: var(--text-secondary);
+}
+
+.input-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-hint.error {
+  color: var(--alert-red);
+}
+
+.input-hint.success {
+  color: var(--success-green);
+}
+
+.hint-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+  padding: 14px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 54px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--forest-deep) 0%, #2a3f38 100%);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-text {
+  background: none;
+  color: var(--terracotta);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 8px;
+  width: auto;
+  max-width: 100%;
+}
+
+.btn-text:hover {
+  opacity: 0.8;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+.btn:disabled .spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========== EMAIL VALIDATION MESSAGES ========== */
+.validation-status {
+  display: none;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 8px;
+  align-items: center;
+  gap: 8px;
+}
+
+.validation-status.show {
+  display: flex;
+}
+
+.validation-status.loading {
+  background: rgba(193, 92, 59, 0.1);
+  color: var(--terracotta);
+}
+
+.validation-status.success {
+  background: rgba(45, 90, 71, 0.1);
+  color: var(--success-green);
+}
+
+.validation-status.error {
+  background: rgba(155, 75, 60, 0.1);
+  color: var(--alert-red);
+}
+
+.validation-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ========== OTP ENTRY ========== */
+.otp-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin: 32px auto;
+  max-width: 360px;
+  width: 100%;
+}
+
+.otp-input {
+  aspect-ratio: 1;
+  width: 100%;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  background: white;
+  color: var(--text-primary);
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(193, 92, 59, 0.1);
+}
+
+.otp-input::-webkit-outer-spin-button,
+.otp-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.timer-display {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 16px 0;
+  font-weight: 600;
+}
+
+.timer-display.urgent {
+  color: var(--alert-red);
+}
+
+/* ========== CROP SELECTION ========== */
+.crop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 32px auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .crop-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.crop-card {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.crop-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(193, 92, 59, 0.1), rgba(107, 142, 127, 0.1));
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.crop-card:hover {
+  border-color: var(--terracotta);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.crop-card:hover::before {
+  opacity: 1;
+}
+
+.crop-card.selected {
+  background: linear-gradient(135deg, rgba(193, 92, 59, 0.1), rgba(193, 92, 59, 0.05));
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(193, 92, 59, 0.1);
+}
+
+.crop-card-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.crop-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+
+.crop-card-checkmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: var(--terracotta);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: var(--transition);
+  z-index: 2;
+}
+
+.crop-card.selected .crop-card-checkmark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ========== PROGRESS STEPS ========== */
+.progress-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-color);
+  transition: var(--transition);
+}
+
+.progress-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--terracotta);
+}
+
+.progress-dot.done {
+  background: var(--sage);
+}
+
+.progress-label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+/* ========== LOCATION SELECT ========== */
+.select-field {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 16px;
+  background: white;
+  color: var(--text-primary);
+  transition: var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.select-field:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(193, 92, 59, 0.1);
+}
+
+.location-row {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+
+/* ========== CROP SEARCH ========== */
+.crop-search-row {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.crop-search-row .input-wrapper {
+  flex: 1;
+}
+
+.crop-search-row .btn-add {
+  width: auto;
+  min-height: 54px;
+  padding: 0 20px;
+  margin: 0;
+  background: linear-gradient(135deg, var(--terracotta) 0%, #a84a2e 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.crop-search-row .btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.crop-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 600px;
+  margin: 24px auto;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.crop-divider::before,
+.crop-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.custom-crop-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(107, 142, 127, 0.12);
+  color: var(--success-green);
+  border: 2px solid rgba(107, 142, 127, 0.3);
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 4px 6px 4px 0;
+}
+
+.custom-crop-tag button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+
+.custom-crops-wrap {
+  max-width: 600px;
+  margin: 0 auto 8px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.welcome-back-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(45, 90, 71, 0.1);
+  color: var(--success-green);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ========== DASHBOARD ========== */
+.dashboard-hero {
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashboard-greeting {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.dashboard-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.crop-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 16px 28px;
+  margin: 0 -28px 24px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100vw;
+}
+
+@media (min-width: 1024px) {
+  .crop-tabs {
+    padding: 16px 0;
+    margin: 0 0 24px 0;
+    justify-content: center;
+    max-width: 100%;
+  }
+}
+
+.crop-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.crop-tabs::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.crop-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.crop-tab:hover {
+  border-color: var(--terracotta);
+}
+
+.crop-tab.active {
+  background: linear-gradient(135deg, var(--forest-deep), #2a3f38);
+  color: white;
+  border-color: transparent;
+}
+
+/* ========== PRICE CARDS ========== */
+.price-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 auto 24px;
+  max-width: 100%;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .price-list {
+    max-width: 700px;
+  }
+}
+
+.price-card {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+.price-card:hover {
+  border-color: var(--terracotta);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.price-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--sage);
+  transition: var(--transition);
+}
+
+.price-card.high-price::before {
+  background: var(--success-green);
+}
+
+.price-card.low-price::before {
+  background: var(--alert-red);
+}
+
+.price-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.mandi-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.mandi-location {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.price-badge {
+  background: linear-gradient(135deg, rgba(193, 92, 59, 0.15), rgba(166, 124, 82, 0.1));
+  color: var(--terracotta);
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.price-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.price-unit {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.price-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.trend-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.trend-up { color: var(--success-green); }
+.trend-down { color: var(--alert-red); }
+.trend-flat { color: var(--text-secondary); }
+
+.sound-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(193, 92, 59, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--terracotta);
+  transition: var(--transition);
+  font-size: 18px;
+}
+
+.sound-btn:hover {
+  background: rgba(193, 92, 59, 0.2);
+  transform: scale(1.1);
+}
+
+/* ========== TOAST ========== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--earth-dark);
+  color: white;
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease-out, slideDown 0.3s ease-out 3.7s forwards;
+  z-index: 9999;
+  max-width: 90%;
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(24px);
+  }
+}
+
+/* ========== USER FOOTER ========== */
+.user-footer {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.user-email {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.logout-btn {
+  background: rgba(193, 92, 59, 0.1);
+  color: var(--terracotta);
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.logout-btn:hover {
+  background: rgba(193, 92, 59, 0.2);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER (Sidebar on Desktop) -->
+  <header class="header">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 40px;">
+      <div class="logo">
+        <div class="logo-icon">🌾</div>
+        <span>Mandi Vilai</span>
+      </div>
+      <select class="lang-switch" id="langToggle" aria-label="Language">
+        <option value="en">English</option>
+        <option value="ta">தமிழ் (Tamil)</option>
+        <option value="hi">हिंदी (Hindi)</option>
+        <option value="te">తెలుగు (Telugu)</option>
+        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+        <option value="ml">മലയാളം (Malayalam)</option>
+      </select>
+    </div>
+    
+    <div class="header-content">
+      <div class="header-title" data-i18n="headerTitle">Know Your Market</div>
+      <div class="header-subtitle" data-i18n="headerSubtitle">Get real-time crop prices at mandis near you. Make informed farming decisions with official agricultural market data.</div>
+      <div class="header-stats">
+        <div class="stat">
+          <div class="stat-number">500K+</div>
+          <div class="stat-label" data-i18n="statFarmers">Farmers Informed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">2,000+</div>
+          <div class="stat-label" data-i18n="statMandis">Mandis Tracked</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-i18n="statDaily">Daily</div>
+          <div class="stat-label" data-i18n="statUpdates">Real-time Updates</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="screen-container">
+    <!-- SCREEN 1: EMAIL -->
+    <div id="screenEmail" class="screen">
+      <div class="screen-content">
+        <div class="progress-label" data-i18n="step1">Step 1 of 3</div>
+        <div class="progress-steps">
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+        </div>
+
+        <div class="hero">
+          <div class="hero-graphic">📧</div>
+          <h1 data-i18n="headerTitle">Know Your Market</h1>
+          <p data-i18n="emailHeroSub">Get real-time crop prices at your fingertips</p>
+        </div>
+
+        <form id="emailForm" class="form-group">
+          <div>
+            <label class="input-label" data-i18n="emailLabel">Email Address</label>
+            <div class="input-wrapper">
+              <i class="ti ti-mail input-icon"></i>
+              <input
+                type="email"
+                id="emailInput"
+                class="input-field"
+                placeholder="your.email@example.com"
+                required
+              />
+            </div>
+            <div class="validation-status" id="emailValidation"></div>
+            <p class="input-hint" id="emailHint" data-i18n="emailHint">We'll send a verification code to your email</p>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="sendCodeBtn">
+            <span class="spinner"></span>
+            <span data-i18n="sendCode">Send Verification Code</span>
+          </button>
+        </form>
+
+        <p style="text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 20px;" data-i18n="officialData">
+          Official agricultural market data for informed farming decisions
+        </p>
+        <p style="text-align: center; margin-top: 12px;">
+          <a href="/admin" id="adminLoginLink" style="font-size:12px; color: var(--text-secondary); text-decoration: underline;" data-i18n="adminLoginLink">Admin login</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: OTP -->
+    <div id="screenOtp" class="screen hidden">
+      <div class="screen-content">
+        <div class="progress-label" data-i18n="step2">Step 2 of 3</div>
+        <div class="progress-steps">
+          <div class="progress-dot done"></div>
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+        </div>
+
+        <div class="hero">
+          <div class="hero-graphic">✓</div>
+          <h1 data-i18n="verifyTitle">Verify Your Email</h1>
+          <p id="otpHint" data-i18n="otpHintDefault">Check your inbox for the verification code</p>
+        </div>
+
+        <form id="otpForm" class="form-group">
+          <div class="otp-grid" id="otpGrid">
+            <input type="number" class="otp-input" min="0" max="9" inputmode="numeric" />
+            <input type="number" class="otp-input" min="0" max="9" inputmode="numeric" />
+            <input type="number" class="otp-input" min="0" max="9" inputmode="numeric" />
+            <input type="number" class="otp-input" min="0" max="9" inputmode="numeric" />
+            <input type="number" class="otp-input" min="0" max="9" inputmode="numeric" />
+            <input type="number" class="otp-input" min="0" max="9" inputmode="numeric" />
+          </div>
+
+          <div class="timer-display" id="timerDisplay" data-i18n="expiresDefault">Expires in 10:00</div>
+
+          <button type="submit" class="btn btn-primary" id="verifyBtn">
+            <span class="spinner"></span>
+            <span data-i18n="verifyBtn">Verify</span>
+          </button>
+        </form>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 24px; max-width: 600px; margin-left: auto; margin-right: auto; width: 100%;">
+          <button type="button" class="btn-text" id="resendBtn" data-i18n="resendBtn">Didn't receive code? Resend</button>
+          <button type="button" class="btn-text" id="backEmailBtn" data-i18n="backEmailBtn">Use different email</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: CROP SELECTION -->
+    <div id="screenCrop" class="screen hidden">
+      <div class="screen-content">
+        <div class="progress-label" data-i18n="step3">Step 3 of 3</div>
+        <div class="progress-steps">
+          <div class="progress-dot done"></div>
+          <div class="progress-dot done"></div>
+          <div class="progress-dot active"></div>
+        </div>
+
+        <div class="hero">
+          <div class="hero-graphic">🌱</div>
+          <h1 data-i18n="growTitle">What Do You Grow?</h1>
+          <p data-i18n="growSub">Select your crops and your nearest Tamil Nadu market</p>
+        </div>
+
+        <div class="location-row">
+          <label class="input-label" data-i18n="nameLabel">Your Name</label>
+          <div class="input-wrapper">
+            <i class="ti ti-user input-icon"></i>
+            <input type="text" id="farmerNameInput" class="input-field" placeholder="e.g. Murugan" autocomplete="name" />
+          </div>
+        </div>
+
+        <div class="location-row">
+          <label class="input-label" data-i18n="locationLabel">Your Location in Tamil Nadu</label>
+          <div class="input-wrapper">
+            <i class="ti ti-map-pin input-icon"></i>
+            <select id="districtSelect" class="select-field"></select>
+          </div>
+        </div>
+
+        <div class="crop-search-row">
+          <div class="input-wrapper">
+            <i class="ti ti-search input-icon"></i>
+            <input type="text" id="cropSearchInput" class="input-field" data-i18n-placeholder="cropSearchPlaceholder" placeholder="Search any crop — rice, turmeric, mango…" autocomplete="off" />
+          </div>
+          <button type="button" class="btn-add" id="addCropSearchBtn" data-i18n="addBtn">Add</button>
+        </div>
+        <p class="input-hint" style="max-width:600px; margin:0 auto 8px;" data-i18n="cropTypeHint">Type any crop not in the list below — it'll show live-style prices too.</p>
+        <div class="custom-crops-wrap" id="customCropsWrap"></div>
+
+        <div class="crop-divider" data-i18n="pickPopular">Or pick from popular crops</div>
+
+        <div class="crop-grid" id="cropGrid"></div>
+
+        <button type="button" class="btn btn-primary" id="continueBtn" style="margin-top: 32px; max-width: 600px;" data-i18n="continueBtn">
+          Continue to Dashboard
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: DASHBOARD -->
+    <div id="screenDash" class="screen hidden">
+      <div class="screen-content">
+        <div class="dashboard-hero">
+          <div class="dashboard-greeting" id="greeting" data-i18n="greetingDefault">Good morning, farmer</div>
+          <div class="dashboard-title" id="dashDate" data-i18n="todaysMarket">Today's Market</div>
+          <div class="location-row" style="margin:12px auto 0;">
+            <div class="input-wrapper">
+              <i class="ti ti-map-pin input-icon"></i>
+              <select id="dashDistrictSelect" class="select-field"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="crop-search-row">
+          <div class="input-wrapper">
+            <i class="ti ti-search input-icon"></i>
+            <input type="text" id="dashCropSearchInput" class="input-field" data-i18n-placeholder="cropSearchPlaceholder" placeholder="Search any crop — rice, turmeric, mango…" autocomplete="off" />
+          </div>
+          <button type="button" class="btn-add" id="dashAddCropBtn" data-i18n="addBtn">Add</button>
+        </div>
+
+        <div class="crop-tabs" id="cropTabs"></div>
+
+        <div class="price-list" id="priceList"></div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 16px; max-width: 600px; margin-left: auto; margin-right: auto; width: 100%;">
+          <button class="btn btn-primary" id="addCropBtn" style="flex: 1;">
+            <i class="ti ti-plus"></i>
+            <span data-i18n="changeCropsBtn">Change Crops & Location</span>
+          </button>
+        </div>
+
+        <div class="user-footer" style="flex-direction:column; align-items:stretch; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+            <div class="user-email" id="userEmail"></div>
+            <div style="display:flex; gap:10px;">
+              <button class="btn-text" id="toggleEmailChangeBtn" data-i18n="changeEmailBtn" style="padding:6px 4px;">Change email</button>
+              <button class="logout-btn" id="logoutBtn" data-i18n="signOut">Sign out</button>
+            </div>
+          </div>
+
+          <div id="emailChangePanel" class="hidden" style="width:100%; max-width:600px; margin:0 auto; background:white; border:2px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+            <label class="input-label" data-i18n="newEmailLabel">New email</label>
+            <div class="input-wrapper" style="margin-bottom:10px;">
+              <i class="ti ti-mail input-icon"></i>
+              <input type="email" id="newEmailInput" class="input-field" data-i18n-placeholder="newEmailPlaceholder" placeholder="new.email@example.com" autocomplete="off" />
+            </div>
+            <button type="button" class="btn btn-primary" id="sendEmailChangeBtn" style="margin-bottom:10px;" data-i18n="sendEmailChangeCode">Send verification code</button>
+
+            <div id="emailChangeOtpRow" class="hidden">
+              <label class="input-label" data-i18n="verifyBtn">Verify</label>
+              <div class="input-wrapper" style="margin-bottom:10px;">
+                <input type="text" id="emailChangeCodeInput" class="input-field" style="padding-left:16px;" maxlength="6" inputmode="numeric" placeholder="6-digit code" />
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button type="button" class="btn btn-primary" id="confirmEmailChangeBtn" data-i18n="confirmEmailChangeBtn">Confirm change</button>
+                <button type="button" class="btn-text" id="cancelEmailChangeBtn" data-i18n="cancelChangeBtn">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = "/api";
+let currentLang = localStorage.getItem("lang") || "en";
+let pendingEmail = null;
+
+/* ========== TRANSLATIONS (EN / TA) ==========
+   t(key) looks up the current-language string. applyTranslations() sweeps
+   the DOM for [data-i18n] / [data-i18n-placeholder] elements and swaps their
+   text/placeholder — nothing about layout, classes, or structure changes. */
+const TRANSLATIONS = {
+  en: {
+    headerTitle: "Know Your Market",
+    headerSubtitle: "Get real-time crop prices at mandis near you. Make informed farming decisions with official agricultural market data.",
+    statFarmers: "Farmers Informed",
+    statMandis: "Mandis Tracked",
+    statDaily: "Daily",
+    statUpdates: "Real-time Updates",
+    step1: "Step 1 of 3",
+    step2: "Step 2 of 3",
+    step3: "Step 3 of 3",
+    emailHeroSub: "Get real-time crop prices at your fingertips",
+    emailLabel: "Email Address",
+    emailHint: "We'll send a verification code to your email",
+    sendCode: "Send Verification Code",
+    officialData: "Official agricultural market data for informed farming decisions",
+    verifyTitle: "Verify Your Email",
+    otpHintDefault: "Check your inbox for the verification code",
+    expiresDefault: "Expires in 10:00",
+    expiresIn: "Expires in",
+    verifyBtn: "Verify",
+    resendBtn: "Didn't receive code? Resend",
+    backEmailBtn: "Use different email",
+    growTitle: "What Do You Grow?",
+    growSub: "Select your crops and your nearest Tamil Nadu market",
+    nameLabel: "Your Name",
+    locationLabel: "Your Location in Tamil Nadu",
+    cropSearchPlaceholder: "Search any crop — rice, turmeric, mango…",
+    addBtn: "Add",
+    cropTypeHint: "Type any crop not in the list below — it'll show live-style prices too.",
+    pickPopular: "Or pick from popular crops",
+    continueBtn: "Continue to Dashboard",
+    greetingDefault: "Good morning, farmer",
+    goodMorning: "Good morning",
+    todaysMarket: "Today's Market",
+    changeCropsBtn: "Change Crops & Location",
+    signOut: "Sign out",
+    loadingPrices: "Loading prices...",
+    bestPrice: "⭐ Best price",
+    estimated: "Estimated",
+    perQuintal: "/ quintal",
+    rising: "Rising",
+    falling: "Falling",
+    noChange: "No change",
+    tamilNadu: "Tamil Nadu",
+    enterEmail: "Please enter your email",
+    enterValidEmail: "Please enter a valid email address",
+    welcomeBack: "Welcome back! No verification needed on this device.",
+    codeResent: "Code resent to your email",
+    enterAllDigits: "Enter all 6 digits",
+    emailVerified: "Email verified! This device will remember you next time.",
+    enterName: "Enter your name",
+    selectCrop: "Select or search at least one crop",
+    typeCropFirst: "Type a crop name first",
+    cropAdded: "added — prices ready",
+    showingPricesFor: "Showing prices for",
+    invalidEmailFormat: "Invalid email format",
+    emailLooksGood: "Email looks good ✓",
+    accountSection: "Account",
+    currentEmailLabel: "Current email",
+    newEmailLabel: "New email",
+    newEmailPlaceholder: "new.email@example.com",
+    sendEmailChangeCode: "Send verification code",
+    emailChangeCodeSent: "Verification code sent to your new email",
+    confirmEmailChangeBtn: "Confirm change",
+    emailUpdated: "Email updated successfully",
+    enterNewEmail: "Enter a new email address",
+    cancelChangeBtn: "Cancel",
+    changeEmailBtn: "Change email",
+    adminLoginLink: "Admin login",
+  },
+  ta: {
+    headerTitle: "உங்கள் சந்தையை அறியுங்கள்",
+    headerSubtitle: "உங்களுக்கு அருகிலுள்ள சந்தைகளில் நேரடி பயிர் விலைகளைப் பெறுங்கள். அதிகாரப்பூர்வ வேளாண் சந்தைத் தரவுகளுடன் சரியான முடிவெடுங்கள்.",
+    statFarmers: "தகவல் பெற்ற விவசாயிகள்",
+    statMandis: "கண்காணிக்கப்படும் சந்தைகள்",
+    statDaily: "தினசரி",
+    statUpdates: "நேரடி புதுப்பிப்புகள்",
+    step1: "படி 1 / 3",
+    step2: "படி 2 / 3",
+    step3: "படி 3 / 3",
+    emailHeroSub: "நேரடி பயிர் விலைகள் உங்கள் விரல் நுனியில்",
+    emailLabel: "மின்னஞ்சல் முகவரி",
+    emailHint: "உங்கள் மின்னஞ்சலுக்கு சரிபார்ப்புக் குறியீடு அனுப்பப்படும்",
+    sendCode: "சரிபார்ப்புக் குறியீட்டை அனுப்பு",
+    officialData: "சரியான விவசாய முடிவுகளுக்கான அதிகாரப்பூர்வ சந்தைத் தரவு",
+    verifyTitle: "உங்கள் மின்னஞ்சலை சரிபார்க்கவும்",
+    otpHintDefault: "சரிபார்ப்புக் குறியீட்டிற்கு உங்கள் இன்பாக்ஸைப் பாருங்கள்",
+    expiresDefault: "10:00 நிமிடத்தில் காலாவதியாகும்",
+    expiresIn: "காலாவதியாகும் நேரம்",
+    verifyBtn: "சரிபார்",
+    resendBtn: "குறியீடு வரவில்லையா? மீண்டும் அனுப்பு",
+    backEmailBtn: "வேறு மின்னஞ்சலைப் பயன்படுத்து",
+    growTitle: "நீங்கள் என்ன பயிரிடுகிறீர்கள்?",
+    growSub: "உங்கள் பயிர்களையும் அருகிலுள்ள தமிழ்நாட்டு சந்தையையும் தேர்ந்தெடுக்கவும்",
+    nameLabel: "உங்கள் பெயர்",
+    locationLabel: "தமிழ்நாட்டில் உங்கள் இடம்",
+    cropSearchPlaceholder: "எந்த பயிரையும் தேடுங்கள் — நெல், மஞ்சள், மாம்பழம்…",
+    addBtn: "சேர்",
+    cropTypeHint: "கீழே பட்டியலில் இல்லாத பயிரைத் தட்டச்சு செய்யுங்கள் — அதற்கும் விலை காட்டப்படும்.",
+    pickPopular: "அல்லது பிரபலமான பயிர்களிலிருந்து தேர்ந்தெடுக்கவும்",
+    continueBtn: "டாஷ்போர்டுக்குச் செல்",
+    greetingDefault: "காலை வணக்கம், விவசாயி",
+    goodMorning: "காலை வணக்கம்",
+    todaysMarket: "இன்றைய சந்தை",
+    changeCropsBtn: "பயிர்கள் & இடத்தை மாற்று",
+    signOut: "வெளியேறு",
+    loadingPrices: "விலைகள் ஏற்றப்படுகின்றன...",
+    bestPrice: "⭐ சிறந்த விலை",
+    estimated: "மதிப்பிடப்பட்டது",
+    perQuintal: "/ குவிண்டால்",
+    rising: "உயர்கிறது",
+    falling: "குறைகிறது",
+    noChange: "மாற்றமில்லை",
+    tamilNadu: "தமிழ்நாடு",
+    enterEmail: "தயவுசெய்து உங்கள் மின்னஞ்சலை உள்ளிடவும்",
+    enterValidEmail: "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+    welcomeBack: "மீண்டும் வருக! இந்தச் சாதனத்தில் சரிபார்ப்பு தேவையில்லை.",
+    codeResent: "குறியீடு உங்கள் மின்னஞ்சலுக்கு மீண்டும் அனுப்பப்பட்டது",
+    enterAllDigits: "6 இலக்கங்களையும் உள்ளிடவும்",
+    emailVerified: "மின்னஞ்சல் சரிபார்க்கப்பட்டது! இந்தச் சாதனம் அடுத்த முறை உங்களை நினைவில் வைத்திருக்கும்.",
+    enterName: "உங்கள் பெயரை உள்ளிடவும்",
+    selectCrop: "குறைந்தது ஒரு பயிரையாவது தேர்ந்தெடுக்கவும் அல்லது தேடவும்",
+    typeCropFirst: "முதலில் ஒரு பயிர் பெயரைத் தட்டச்சு செய்யுங்கள்",
+    cropAdded: "சேர்க்கப்பட்டது — விலைகள் தயார்",
+    showingPricesFor: "விலைகள் காட்டப்படுகின்றன",
+    invalidEmailFormat: "தவறான மின்னஞ்சல் வடிவம்",
+    emailLooksGood: "மின்னஞ்சல் சரியாக உள்ளது ✓",
+    accountSection: "கணக்கு",
+    currentEmailLabel: "தற்போதைய மின்னஞ்சல்",
+    newEmailLabel: "புதிய மின்னஞ்சல்",
+    newEmailPlaceholder: "new.email@example.com",
+    sendEmailChangeCode: "சரிபார்ப்புக் குறியீட்டை அனுப்பு",
+    emailChangeCodeSent: "உங்கள் புதிய மின்னஞ்சலுக்கு குறியீடு அனுப்பப்பட்டது",
+    confirmEmailChangeBtn: "மாற்றத்தை உறுதிப்படுத்து",
+    emailUpdated: "மின்னஞ்சல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+    enterNewEmail: "புதிய மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+    cancelChangeBtn: "ரத்து செய்",
+    changeEmailBtn: "மின்னஞ்சலை மாற்று",
+    adminLoginLink: "நிர்வாகி உள்நுழைவு",
+  },
+  hi: {
+    headerTitle: "अपना बाज़ार जानें",
+    headerSubtitle: "अपने नज़दीकी मंडियों में ताज़ा फ़सल के भाव पाएं। आधिकारिक कृषि बाज़ार आंकड़ों के साथ सही फ़ैसला लें।",
+    statFarmers: "जानकार किसान",
+    statMandis: "ट्रैक की गई मंडियां",
+    statDaily: "दैनिक",
+    statUpdates: "रीयल-टाइम अपडेट",
+    step1: "चरण 1 / 3",
+    step2: "चरण 2 / 3",
+    step3: "चरण 3 / 3",
+    emailHeroSub: "ताज़ा फ़सल के भाव अब आपकी उंगलियों पर",
+    emailLabel: "ईमेल पता",
+    emailHint: "हम आपके ईमेल पर सत्यापन कोड भेजेंगे",
+    sendCode: "सत्यापन कोड भेजें",
+    officialData: "सही खेती के फ़ैसलों के लिए आधिकारिक कृषि बाज़ार डेटा",
+    verifyTitle: "अपना ईमेल सत्यापित करें",
+    otpHintDefault: "सत्यापन कोड के लिए अपना इनबॉक्स देखें",
+    expiresDefault: "10:00 में समाप्त होगा",
+    expiresIn: "समाप्त होगा",
+    verifyBtn: "सत्यापित करें",
+    resendBtn: "कोड नहीं मिला? फिर से भेजें",
+    backEmailBtn: "दूसरा ईमेल इस्तेमाल करें",
+    growTitle: "आप क्या उगाते हैं?",
+    growSub: "अपनी फ़सलें और नज़दीकी तमिलनाडु मंडी चुनें",
+    nameLabel: "आपका नाम",
+    locationLabel: "तमिलनाडु में आपका स्थान",
+    cropSearchPlaceholder: "कोई भी फ़सल खोजें — चावल, हल्दी, आम…",
+    addBtn: "जोड़ें",
+    cropTypeHint: "नीचे सूची में न हो तो फ़सल का नाम टाइप करें — उसके भाव भी दिखेंगे।",
+    pickPopular: "या लोकप्रिय फ़सलों में से चुनें",
+    continueBtn: "डैशबोर्ड पर जाएं",
+    greetingDefault: "सुप्रभात, किसान",
+    goodMorning: "सुप्रभात",
+    todaysMarket: "आज का बाज़ार",
+    changeCropsBtn: "फ़सलें और स्थान बदलें",
+    signOut: "साइन आउट",
+    loadingPrices: "भाव लोड हो रहे हैं...",
+    bestPrice: "⭐ सबसे अच्छा भाव",
+    estimated: "अनुमानित",
+    perQuintal: "/ क्विंटल",
+    rising: "बढ़ रहा है",
+    falling: "गिर रहा है",
+    noChange: "कोई बदलाव नहीं",
+    tamilNadu: "तमिलनाडु",
+    enterEmail: "कृपया अपना ईमेल दर्ज करें",
+    enterValidEmail: "कृपया एक मान्य ईमेल पता दर्ज करें",
+    welcomeBack: "वापसी पर स्वागत है! इस डिवाइस पर सत्यापन की ज़रूरत नहीं।",
+    codeResent: "कोड आपके ईमेल पर फिर से भेजा गया",
+    enterAllDigits: "सभी 6 अंक दर्ज करें",
+    emailVerified: "ईमेल सत्यापित! यह डिवाइस अगली बार आपको याद रखेगा।",
+    enterName: "अपना नाम दर्ज करें",
+    selectCrop: "कम से कम एक फ़सल चुनें या खोजें",
+    typeCropFirst: "पहले फ़सल का नाम टाइप करें",
+    cropAdded: "जोड़ा गया — भाव तैयार हैं",
+    showingPricesFor: "इसके भाव दिखाए जा रहे हैं",
+    invalidEmailFormat: "अमान्य ईमेल प्रारूप",
+    emailLooksGood: "ईमेल सही लग रहा है ✓",
+    accountSection: "खाता",
+    currentEmailLabel: "वर्तमान ईमेल",
+    newEmailLabel: "नया ईमेल",
+    newEmailPlaceholder: "new.email@example.com",
+    sendEmailChangeCode: "सत्यापन कोड भेजें",
+    emailChangeCodeSent: "आपके नए ईमेल पर सत्यापन कोड भेजा गया",
+    confirmEmailChangeBtn: "बदलाव की पुष्टि करें",
+    emailUpdated: "ईमेल सफलतापूर्वक अपडेट हुआ",
+    enterNewEmail: "एक नया ईमेल पता दर्ज करें",
+    cancelChangeBtn: "रद्द करें",
+    changeEmailBtn: "ईमेल बदलें",
+    adminLoginLink: "एडमिन लॉगिन",
+  },
+  te: {
+    headerTitle: "మీ మార్కెట్‌ను తెలుసుకోండి",
+    headerSubtitle: "మీ దగ్గరలోని మండీలలో నిజ-సమయ పంట ధరలను పొందండి. అధికారిక వ్యవసాయ మార్కెట్ డేటాతో సరైన నిర్ణయాలు తీసుకోండి.",
+    statFarmers: "సమాచారం పొందిన రైతులు",
+    statMandis: "ట్రాక్ చేసిన మండీలు",
+    statDaily: "రోజువారీ",
+    statUpdates: "నిజ-సమయ నవీకరణలు",
+    step1: "దశ 1 / 3",
+    step2: "దశ 2 / 3",
+    step3: "దశ 3 / 3",
+    emailHeroSub: "నిజ-సమయ పంట ధరలు మీ వేలిచివర",
+    emailLabel: "ఇమెయిల్ చిరునామా",
+    emailHint: "మీ ఇమెయిల్‌కు వెరిఫికేషన్ కోడ్ పంపబడుతుంది",
+    sendCode: "వెరిఫికేషన్ కోడ్ పంపండి",
+    officialData: "సరైన వ్యవసాయ నిర్ణయాల కోసం అధికారిక మార్కెట్ డేటా",
+    verifyTitle: "మీ ఇమెయిల్‌ను ధృవీకరించండి",
+    otpHintDefault: "వెరిఫికేషన్ కోడ్ కోసం మీ ఇన్‌బాక్స్ చూడండి",
+    expiresDefault: "10:00లో గడువు ముగుస్తుంది",
+    expiresIn: "గడువు ముగిసేది",
+    verifyBtn: "ధృవీకరించు",
+    resendBtn: "కోడ్ రాలేదా? మళ్లీ పంపండి",
+    backEmailBtn: "వేరే ఇమెయిల్ వాడండి",
+    growTitle: "మీరు ఏమి పండిస్తారు?",
+    growSub: "మీ పంటలు మరియు సమీప తమిళనాడు మార్కెట్‌ను ఎంచుకోండి",
+    nameLabel: "మీ పేరు",
+    locationLabel: "తమిళనాడులో మీ ప్రాంతం",
+    cropSearchPlaceholder: "ఏదైనా పంట వెతకండి — వరి, పసుపు, మామిడి…",
+    addBtn: "జోడించు",
+    cropTypeHint: "క్రింద జాబితాలో లేని పంటను టైప్ చేయండి — దానికి కూడా ధరలు కనిపిస్తాయి.",
+    pickPopular: "లేదా ప్రసిద్ధ పంటల నుండి ఎంచుకోండి",
+    continueBtn: "డాష్‌బోర్డ్‌కు వెళ్లండి",
+    greetingDefault: "శుభోదయం, రైతు",
+    goodMorning: "శుభోదయం",
+    todaysMarket: "నేటి మార్కెట్",
+    changeCropsBtn: "పంటలు & ప్రాంతం మార్చు",
+    signOut: "సైన్ అవుట్",
+    loadingPrices: "ధరలు లోడ్ అవుతున్నాయి...",
+    bestPrice: "⭐ ఉత్తమ ధర",
+    estimated: "అంచనా",
+    perQuintal: "/ క్వింటాల్",
+    rising: "పెరుగుతోంది",
+    falling: "తగ్గుతోంది",
+    noChange: "మార్పు లేదు",
+    tamilNadu: "తమిళనాడు",
+    enterEmail: "దయచేసి మీ ఇమెయిల్ నమోదు చేయండి",
+    enterValidEmail: "దయచేసి సరైన ఇమెయిల్ చిరునామా నమోదు చేయండి",
+    welcomeBack: "తిరిగి స్వాగతం! ఈ పరికరంలో ధృవీకరణ అవసరం లేదు.",
+    codeResent: "కోడ్ మీ ఇమెయిల్‌కు మళ్లీ పంపబడింది",
+    enterAllDigits: "అన్ని 6 అంకెలను నమోదు చేయండి",
+    emailVerified: "ఇమెయిల్ ధృవీకరించబడింది! ఈ పరికరం మీకు తదుపరిసారి గుర్తుంచుకుంటుంది.",
+    enterName: "మీ పేరు నమోదు చేయండి",
+    selectCrop: "కనీసం ఒక పంటను ఎంచుకోండి లేదా వెతకండి",
+    typeCropFirst: "ముందుగా పంట పేరు టైప్ చేయండి",
+    cropAdded: "జోడించబడింది — ధరలు సిద్ధంగా ఉన్నాయి",
+    showingPricesFor: "దీని ధరలు చూపబడుతున్నాయి",
+    invalidEmailFormat: "చెల్లని ఇమెయిల్ ఫార్మాట్",
+    emailLooksGood: "ఇమెయిల్ సరిగ్గా ఉంది ✓",
+    accountSection: "ఖాతా",
+    currentEmailLabel: "ప్రస్తుత ఇమెయిల్",
+    newEmailLabel: "కొత్త ఇమెయిల్",
+    newEmailPlaceholder: "new.email@example.com",
+    sendEmailChangeCode: "వెరిఫికేషన్ కోడ్ పంపండి",
+    emailChangeCodeSent: "మీ కొత్త ఇమెయిల్‌కు వెరిఫికేషన్ కోడ్ పంపబడింది",
+    confirmEmailChangeBtn: "మార్పును నిర్ధారించండి",
+    emailUpdated: "ఇమెయిల్ విజయవంతంగా నవీకరించబడింది",
+    enterNewEmail: "కొత్త ఇమెయిల్ చిరునామా నమోదు చేయండి",
+    cancelChangeBtn: "రద్దు చేయి",
+    changeEmailBtn: "ఇమెయిల్ మార్చు",
+    adminLoginLink: "అడ్మిన్ లాగిన్",
+  },
+  kn: {
+    headerTitle: "ನಿಮ್ಮ ಮಾರುಕಟ್ಟೆಯನ್ನು ತಿಳಿಯಿರಿ",
+    headerSubtitle: "ನಿಮ್ಮ ಹತ್ತಿರದ ಮಂಡಿಗಳಲ್ಲಿ ನೈಜ-ಸಮಯದ ಬೆಳೆ ಬೆಲೆಗಳನ್ನು ಪಡೆಯಿರಿ. ಅಧಿಕೃತ ಕೃಷಿ ಮಾರುಕಟ್ಟೆ ದತ್ತಾಂಶದೊಂದಿಗೆ ಸರಿಯಾದ ನಿರ್ಧಾರಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ.",
+    statFarmers: "ಮಾಹಿತಿ ಪಡೆದ ರೈತರು",
+    statMandis: "ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಮಂಡಿಗಳು",
+    statDaily: "ದೈನಂದಿನ",
+    statUpdates: "ನೈಜ-ಸಮಯ ನವೀಕರಣಗಳು",
+    step1: "ಹಂತ 1 / 3",
+    step2: "ಹಂತ 2 / 3",
+    step3: "ಹಂತ 3 / 3",
+    emailHeroSub: "ನೈಜ-ಸಮಯದ ಬೆಳೆ ಬೆಲೆಗಳು ನಿಮ್ಮ ಬೆರಳ ತುದಿಯಲ್ಲಿ",
+    emailLabel: "ಇಮೇಲ್ ವಿಳಾಸ",
+    emailHint: "ನಿಮ್ಮ ಇಮೇಲ್‌ಗೆ ಪರಿಶೀಲನಾ ಕೋಡ್ ಕಳುಹಿಸಲಾಗುವುದು",
+    sendCode: "ಪರಿಶೀಲನಾ ಕೋಡ್ ಕಳುಹಿಸಿ",
+    officialData: "ಸರಿಯಾದ ಕೃಷಿ ನಿರ್ಧಾರಗಳಿಗಾಗಿ ಅಧಿಕೃತ ಮಾರುಕಟ್ಟೆ ದತ್ತಾಂಶ",
+    verifyTitle: "ನಿಮ್ಮ ಇಮೇಲ್ ಪರಿಶೀಲಿಸಿ",
+    otpHintDefault: "ಪರಿಶೀಲನಾ ಕೋಡ್‌ಗಾಗಿ ನಿಮ್ಮ ಇನ್‌ಬಾಕ್ಸ್ ನೋಡಿ",
+    expiresDefault: "10:00 ರಲ್ಲಿ ಮುಕ್ತಾಯವಾಗುತ್ತದೆ",
+    expiresIn: "ಮುಕ್ತಾಯವಾಗುವುದು",
+    verifyBtn: "ಪರಿಶೀಲಿಸಿ",
+    resendBtn: "ಕೋಡ್ ಬರಲಿಲ್ಲವೇ? ಮತ್ತೆ ಕಳುಹಿಸಿ",
+    backEmailBtn: "ಬೇರೆ ಇಮೇಲ್ ಬಳಸಿ",
+    growTitle: "ನೀವು ಏನು ಬೆಳೆಯುತ್ತೀರಿ?",
+    growSub: "ನಿಮ್ಮ ಬೆಳೆಗಳು ಮತ್ತು ಹತ್ತಿರದ ತಮಿಳುನಾಡು ಮಾರುಕಟ್ಟೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    nameLabel: "ನಿಮ್ಮ ಹೆಸರು",
+    locationLabel: "ತಮಿಳುನಾಡಿನಲ್ಲಿ ನಿಮ್ಮ ಸ್ಥಳ",
+    cropSearchPlaceholder: "ಯಾವುದೇ ಬೆಳೆ ಹುಡುಕಿ — ಭತ್ತ, ಅರಿಶಿನ, ಮಾವು…",
+    addBtn: "ಸೇರಿಸಿ",
+    cropTypeHint: "ಕೆಳಗಿನ ಪಟ್ಟಿಯಲ್ಲಿ ಇಲ್ಲದ ಬೆಳೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ — ಅದಕ್ಕೂ ಬೆಲೆ ತೋರಿಸಲಾಗುತ್ತದೆ.",
+    pickPopular: "ಅಥವಾ ಜನಪ್ರಿಯ ಬೆಳೆಗಳಿಂದ ಆಯ್ಕೆಮಾಡಿ",
+    continueBtn: "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಮುಂದುವರಿಸಿ",
+    greetingDefault: "ಶುಭೋದಯ, ರೈತರೇ",
+    goodMorning: "ಶುಭೋದಯ",
+    todaysMarket: "ಇಂದಿನ ಮಾರುಕಟ್ಟೆ",
+    changeCropsBtn: "ಬೆಳೆಗಳು ಮತ್ತು ಸ್ಥಳ ಬದಲಿಸಿ",
+    signOut: "ಸೈನ್ ಔಟ್",
+    loadingPrices: "ಬೆಲೆಗಳು ಲೋಡ್ ಆಗುತ್ತಿವೆ...",
+    bestPrice: "⭐ ಉತ್ತಮ ಬೆಲೆ",
+    estimated: "ಅಂದಾಜು",
+    perQuintal: "/ ಕ್ವಿಂಟಾಲ್",
+    rising: "ಏರುತ್ತಿದೆ",
+    falling: "ಇಳಿಯುತ್ತಿದೆ",
+    noChange: "ಬದಲಾವಣೆ ಇಲ್ಲ",
+    tamilNadu: "ತಮಿಳುನಾಡು",
+    enterEmail: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ",
+    enterValidEmail: "ದಯವಿಟ್ಟು ಮಾನ್ಯ ಇಮೇಲ್ ವಿಳಾಸ ನಮೂದಿಸಿ",
+    welcomeBack: "ಮತ್ತೆ ಸ್ವಾಗತ! ಈ ಸಾಧನದಲ್ಲಿ ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿಲ್ಲ.",
+    codeResent: "ಕೋಡ್ ನಿಮ್ಮ ಇಮೇಲ್‌ಗೆ ಮತ್ತೆ ಕಳುಹಿಸಲಾಗಿದೆ",
+    enterAllDigits: "ಎಲ್ಲಾ 6 ಅಂಕೆಗಳನ್ನು ನಮೂದಿಸಿ",
+    emailVerified: "ಇಮೇಲ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ! ಈ ಸಾಧನ ಮುಂದಿನ ಬಾರಿ ನಿಮ್ಮನ್ನು ನೆನಪಿಡುತ್ತದೆ.",
+    enterName: "ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+    selectCrop: "ಕನಿಷ್ಠ ಒಂದು ಬೆಳೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ ಅಥವಾ ಹುಡುಕಿ",
+    typeCropFirst: "ಮೊದಲು ಬೆಳೆಯ ಹೆಸರನ್ನು ಟೈಪ್ ಮಾಡಿ",
+    cropAdded: "ಸೇರಿಸಲಾಗಿದೆ — ಬೆಲೆಗಳು ಸಿದ್ಧವಾಗಿವೆ",
+    showingPricesFor: "ಇದರ ಬೆಲೆಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ",
+    invalidEmailFormat: "ಅಮಾನ್ಯ ಇಮೇಲ್ ಸ್ವರೂಪ",
+    emailLooksGood: "ಇಮೇಲ್ ಸರಿಯಾಗಿ ಕಾಣುತ್ತದೆ ✓",
+    accountSection: "ಖಾತೆ",
+    currentEmailLabel: "ಪ್ರಸ್ತುತ ಇಮೇಲ್",
+    newEmailLabel: "ಹೊಸ ಇಮೇಲ್",
+    newEmailPlaceholder: "new.email@example.com",
+    sendEmailChangeCode: "ಪರಿಶೀಲನಾ ಕೋಡ್ ಕಳುಹಿಸಿ",
+    emailChangeCodeSent: "ನಿಮ್ಮ ಹೊಸ ಇಮೇಲ್‌ಗೆ ಪರಿಶೀಲನಾ ಕೋಡ್ ಕಳುಹಿಸಲಾಗಿದೆ",
+    confirmEmailChangeBtn: "ಬದಲಾವಣೆ ದೃಢೀಕರಿಸಿ",
+    emailUpdated: "ಇಮೇಲ್ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+    enterNewEmail: "ಹೊಸ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ",
+    cancelChangeBtn: "ರದ್ದುಮಾಡಿ",
+    changeEmailBtn: "ಇಮೇಲ್ ಬದಲಾಯಿಸಿ",
+    adminLoginLink: "ನಿರ್ವಾಹಕ ಲಾಗಿನ್",
+  },
+  ml: {
+    headerTitle: "നിങ്ങളുടെ വിപണി അറിയുക",
+    headerSubtitle: "നിങ്ങളുടെ അടുത്തുള്ള മണ്ടികളിലെ തത്സമയ വിള വിലകൾ നേടുക. ഔദ്യോഗിക കാർഷിക വിപണി വിവരങ്ങൾ ഉപയോഗിച്ച് ശരിയായ തീരുമാനങ്ങൾ എടുക്കുക.",
+    statFarmers: "വിവരം ലഭിച്ച കർഷകർ",
+    statMandis: "ട്രാക്ക് ചെയ്ത മണ്ടികൾ",
+    statDaily: "ദിവസേന",
+    statUpdates: "തത്സമയ അപ്ഡേറ്റുകൾ",
+    step1: "ഘട്ടം 1 / 3",
+    step2: "ഘട്ടം 2 / 3",
+    step3: "ഘട്ടം 3 / 3",
+    emailHeroSub: "തത്സമയ വിള വിലകൾ നിങ്ങളുടെ വിരൽത്തുമ്പിൽ",
+    emailLabel: "ഇമെയിൽ വിലാസം",
+    emailHint: "നിങ്ങളുടെ ഇമെയിലിലേക്ക് പരിശോധന കോഡ് അയയ്ക്കും",
+    sendCode: "പരിശോധന കോഡ് അയയ്ക്കുക",
+    officialData: "ശരിയായ കാർഷിക തീരുമാനങ്ങൾക്കുള്ള ഔദ്യോഗിക വിപണി വിവരങ്ങൾ",
+    verifyTitle: "നിങ്ങളുടെ ഇമെയിൽ പരിശോധിക്കുക",
+    otpHintDefault: "പരിശോധന കോഡിനായി നിങ്ങളുടെ ഇൻബോക്സ് നോക്കുക",
+    expiresDefault: "10:00-ൽ കാലഹരണപ്പെടും",
+    expiresIn: "കാലഹരണപ്പെടുന്നത്",
+    verifyBtn: "പരിശോധിക്കുക",
+    resendBtn: "കോഡ് ലഭിച്ചില്ലേ? വീണ്ടും അയയ്ക്കുക",
+    backEmailBtn: "മറ്റൊരു ഇമെയിൽ ഉപയോഗിക്കുക",
+    growTitle: "നിങ്ങൾ എന്താണ് കൃഷി ചെയ്യുന്നത്?",
+    growSub: "നിങ്ങളുടെ വിളകളും അടുത്തുള്ള തമിഴ്‌നാട് മാർക്കറ്റും തിരഞ്ഞെടുക്കുക",
+    nameLabel: "നിങ്ങളുടെ പേര്",
+    locationLabel: "തമിഴ്‌നാട്ടിലെ നിങ്ങളുടെ സ്ഥലം",
+    cropSearchPlaceholder: "ഏതെങ്കിലും വിള തിരയുക — നെല്ല്, മഞ്ഞൾ, മാങ്ങ…",
+    addBtn: "ചേർക്കുക",
+    cropTypeHint: "താഴെയുള്ള ലിസ്റ്റിൽ ഇല്ലാത്ത വിള ടൈപ്പ് ചെയ്യുക — അതിനും വില കാണിക്കും.",
+    pickPopular: "അല്ലെങ്കിൽ ജനപ്രിയ വിളകളിൽ നിന്ന് തിരഞ്ഞെടുക്കുക",
+    continueBtn: "ഡാഷ്ബോർഡിലേക്ക് തുടരുക",
+    greetingDefault: "സുപ്രഭാതം, കർഷകാ",
+    goodMorning: "സുപ്രഭാതം",
+    todaysMarket: "ഇന്നത്തെ വിപണി",
+    changeCropsBtn: "വിളകളും സ്ഥലവും മാറ്റുക",
+    signOut: "സൈൻ ഔട്ട്",
+    loadingPrices: "വിലകൾ ലോഡ് ചെയ്യുന്നു...",
+    bestPrice: "⭐ മികച്ച വില",
+    estimated: "കണക്കാക്കിയത്",
+    perQuintal: "/ ക്വിന്റൽ",
+    rising: "ഉയരുന്നു",
+    falling: "കുറയുന്നു",
+    noChange: "മാറ്റമില്ല",
+    tamilNadu: "തമിഴ്‌നാട്",
+    enterEmail: "ദയവായി നിങ്ങളുടെ ഇമെയിൽ നൽകുക",
+    enterValidEmail: "ദയവായി സാധുവായ ഇമെയിൽ വിലാസം നൽകുക",
+    welcomeBack: "വീണ്ടും സ്വാഗതം! ഈ ഉപകരണത്തിൽ പരിശോധന ആവശ്യമില്ല.",
+    codeResent: "കോഡ് നിങ്ങളുടെ ഇമെയിലിലേക്ക് വീണ്ടും അയച്ചു",
+    enterAllDigits: "എല്ലാ 6 അക്കങ്ങളും നൽകുക",
+    emailVerified: "ഇമെയിൽ പരിശോധിച്ചു! ഈ ഉപകരണം അടുത്ത തവണ നിങ്ങളെ ഓർക്കും.",
+    enterName: "നിങ്ങളുടെ പേര് നൽകുക",
+    selectCrop: "കുറഞ്ഞത് ഒരു വിളയെങ്കിലും തിരഞ്ഞെടുക്കുക അല്ലെങ്കിൽ തിരയുക",
+    typeCropFirst: "ആദ്യം ഒരു വിളയുടെ പേര് ടൈപ്പ് ചെയ്യുക",
+    cropAdded: "ചേർത്തു — വിലകൾ തയ്യാറാണ്",
+    showingPricesFor: "ഇതിന്റെ വിലകൾ കാണിക്കുന്നു",
+    invalidEmailFormat: "അസാധുവായ ഇമെയിൽ ഫോർമാറ്റ്",
+    emailLooksGood: "ഇമെയിൽ ശരിയാണെന്ന് തോന്നുന്നു ✓",
+    accountSection: "അക്കൗണ്ട്",
+    currentEmailLabel: "നിലവിലെ ഇമെയിൽ",
+    newEmailLabel: "പുതിയ ഇമെയിൽ",
+    newEmailPlaceholder: "new.email@example.com",
+    sendEmailChangeCode: "പരിശോധന കോഡ് അയയ്ക്കുക",
+    emailChangeCodeSent: "നിങ്ങളുടെ പുതിയ ഇമെയിലിലേക്ക് പരിശോധന കോഡ് അയച്ചു",
+    confirmEmailChangeBtn: "മാറ്റം സ്ഥിരീകരിക്കുക",
+    emailUpdated: "ഇമെയിൽ വിജയകരമായി അപ്ഡേറ്റ് ചെയ്തു",
+    enterNewEmail: "ഒരു പുതിയ ഇമെയിൽ വിലാസം നൽകുക",
+    cancelChangeBtn: "റദ്ദാക്കുക",
+    changeEmailBtn: "ഇമെയിൽ മാറ്റുക",
+    adminLoginLink: "അഡ്മിൻ ലോഗിൻ",
+  },
+};
+
+function t(key) {
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || TRANSLATIONS.en[key] || key;
+}
+
+function applyTranslations() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.documentElement.lang = currentLang === "ta" ? "ta" : "en";
+}
+
+let selectedCrops = [];
+let activeCrop = null;
+let currentDistrict = "Chennai";
+let timerInterval = null;
+
+/* ========== TAMIL NADU PLACES (must match TN_DISTRICTS in app.py) ========== */
+const TN_PLACES = [
+  "Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli",
+  "Vellore", "Erode", "Thanjavur", "Dindigul", "Cuddalore", "Kanchipuram",
+  "Karur", "Namakkal", "Virudhunagar", "Thoothukudi", "Kanyakumari", "Krishnagiri",
+  "Dharmapuri", "Villupuram", "Pudukkottai", "Ramanathapuram", "Theni", "Ariyalur",
+  "Perambalur", "The Nilgiris (Ooty)", "Sivagangai", "Tiruvannamalai", "Nagapattinam",
+  "Tiruvarur", "Tenkasi", "Tirupathur", "Ranipet", "Chengalpattu", "Kallakurichi",
+  "Mayiladuthurai", "Hosur"
+];
+
+function populateDistrictSelects(selected) {
+  const html = TN_PLACES.map(p => `<option value="${p}">${p}</option>`).join("");
+  const a = document.getElementById("districtSelect");
+  const b = document.getElementById("dashDistrictSelect");
+  if (a) { a.innerHTML = html; a.value = selected || "Chennai"; }
+  if (b) { b.innerHTML = html; b.value = selected || "Chennai"; }
+}
+
+/* ========== CROP DATA (display only — prices always come from the API) ========== */
+const CROP_EMOJIS = {
+  tomato: "🍅", onion: "🧅", paddy: "🌾", rice: "🌾", banana: "🍌",
+  chilli: "🌶️", cotton: "☁️", maize: "🌽", groundnut: "🥜", potato: "🥔",
+  brinjal: "🍆", okra: "🫛", garlic: "🧄", ginger: "🫚", turmeric: "🟡",
+  sugarcane: "🎋", coconut: "🥥", mango: "🥭", cashew: "🌰", sesame: "🌻",
+  sunflower: "🌻", gram: "🫘", wheat: "🌾", cabbage: "🥬", cauliflower: "🥦",
+  carrot: "🥕", beans: "🫘", peas: "🟢"
+};
+
+function normalizeCropKey(name) {
+  return name.trim().toLowerCase().replace(/\s+/g, "");
+}
+function displayCropName(name) {
+  const n = name.trim();
+  return n.charAt(0).toUpperCase() + n.slice(1);
+}
+function getCropEmoji(name) {
+  return CROP_EMOJIS[normalizeCropKey(name)] || "🌾";
+}
+
+const POPULAR_CROPS = [
+  "Tomato", "Onion", "Paddy", "Banana", "Chilli", "Cotton", "Maize", "Groundnut",
+  "Potato", "Brinjal", "Okra", "Garlic", "Ginger", "Turmeric", "Sugarcane",
+  "Coconut", "Mango", "Cashew", "Sesame", "Sunflower", "Gram", "Wheat"
+];
+
+function buildCropGrid() {
+  const grid = document.getElementById("cropGrid");
+  grid.innerHTML = POPULAR_CROPS.map(name => `
+    <div class="crop-card" data-crop="${name}">
+      <div class="crop-card-icon">${getCropEmoji(name)}</div>
+      <div class="crop-card-name">${name}</div>
+      <div class="crop-card-checkmark">✓</div>
+    </div>
+  `).join("");
+}
+
+document.getElementById("cropGrid").addEventListener("click", (e) => {
+  const card = e.target.closest(".crop-card");
+  if (!card) return;
+  const crop = card.dataset.crop;
+  card.classList.toggle("selected");
+  if (selectedCrops.includes(crop)) {
+    selectedCrops = selectedCrops.filter(c => c !== crop);
+  } else {
+    selectedCrops.push(crop);
+  }
+});
+
+/* ========== CUSTOM / SEARCHED CROPS ========== */
+function renderCustomCropTags() {
+  const wrap = document.getElementById("customCropsWrap");
+  const customOnes = selectedCrops.filter(c => !POPULAR_CROPS.includes(c));
+  wrap.innerHTML = customOnes.map(c => `
+    <span class="custom-crop-tag" data-crop="${c}">
+      ${getCropEmoji(c)} ${displayCropName(c)}
+      <button type="button" data-remove="${c}" aria-label="Remove">✕</button>
+    </span>
+  `).join("");
+  wrap.querySelectorAll("button[data-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      selectedCrops = selectedCrops.filter(c => c !== btn.dataset.remove);
+      renderCustomCropTags();
+    });
+  });
+}
+
+function addCropFromSearch(rawValue) {
+  const value = rawValue.trim();
+  if (!value) { toast(t("typeCropFirst")); return; }
+  const display = displayCropName(value);
+  if (!selectedCrops.includes(display)) selectedCrops.push(display);
+  const gridCard = document.querySelector(`.crop-card[data-crop="${display}"]`);
+  if (gridCard) gridCard.classList.add("selected");
+  renderCustomCropTags();
+  toast(`${display} ${t("cropAdded")}`);
+}
+
+document.getElementById("addCropSearchBtn").addEventListener("click", () => {
+  const input = document.getElementById("cropSearchInput");
+  addCropFromSearch(input.value);
+  input.value = "";
+  input.focus();
+});
+document.getElementById("cropSearchInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); document.getElementById("addCropSearchBtn").click(); }
+});
+
+/* ========== API HELPERS ========== */
+async function api(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
+  let data = {};
+  try { data = await res.json(); } catch { /* no body */ }
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  return data;
+}
+
+/* ========== EMAIL VALIDATION (client-side quick checks only —
+   the server is the source of truth for verification) ========== */
+let emailValidationTimeout;
+
+function quickValidateEmail(email) {
+  const validationEl = document.getElementById("emailValidation");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    validationEl.className = "validation-status show error";
+    validationEl.innerHTML = `<i class="ti ti-alert-circle"></i> <span>${t("invalidEmailFormat")}</span>`;
+    return false;
+  }
+  validationEl.className = "validation-status show success";
+  validationEl.innerHTML = `<i class="ti ti-circle-check"></i> <span>${t("emailLooksGood")}</span>`;
+  return true;
+}
+
+document.getElementById("emailInput").addEventListener("blur", (e) => {
+  clearTimeout(emailValidationTimeout);
+  const val = e.target.value.trim().toLowerCase();
+  if (!val) return;
+  emailValidationTimeout = setTimeout(() => quickValidateEmail(val), 300);
+});
+document.getElementById("emailInput").addEventListener("input", () => {
+  document.getElementById("emailValidation").className = "validation-status";
+});
+
+/* ========== EMAIL SUBMIT — server decides if OTP is needed ========== */
+document.getElementById("emailForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("emailInput").value.trim().toLowerCase();
+  const btn = document.getElementById("sendCodeBtn");
+
+  if (!email) { toast(t("enterEmail")); return; }
+  if (!quickValidateEmail(email)) { toast(t("enterValidEmail")); return; }
+
+  pendingEmail = email;
+  btn.disabled = true;
+  try {
+    const data = await api("/auth/send-otp", { method: "POST", body: JSON.stringify({ email }) });
+
+    if (data.skipVerification) {
+      // This device already verified this email before — the server
+      // signed us in directly, no OTP needed.
+      toast(t("welcomeBack"));
+      await afterSignIn(data);
+      return;
+    }
+
+    document.getElementById("otpHint").innerHTML = data.devModeCode
+      ? `Code sent to <strong>${email}</strong><br><span style="color:var(--terracotta)">Demo mode — your code is ${data.devModeCode}</span>`
+      : `Check your inbox at <strong>${email}</strong> for the verification code`;
+    showScreen("screenOtp");
+    document.querySelector(".otp-input").focus();
+    startTimer();
+  } catch (err) {
+    toast(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* ========== OTP INPUT ========== */
+const otpInputs = document.querySelectorAll(".otp-input");
+otpInputs.forEach((input, i) => {
+  input.addEventListener("input", () => {
+    input.value = input.value.replace(/\D/g, "");
+    if (input.value && i < otpInputs.length - 1) otpInputs[i + 1].focus();
+  });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !input.value && i > 0) otpInputs[i - 1].focus();
+  });
+});
+
+document.getElementById("resendBtn").addEventListener("click", async () => {
+  try {
+    const data = await api("/auth/send-otp", { method: "POST", body: JSON.stringify({ email: pendingEmail }) });
+    document.getElementById("otpHint").innerHTML = data.devModeCode
+      ? `Code resent to <strong>${pendingEmail}</strong><br><span style="color:var(--terracotta)">Demo mode — your code is ${data.devModeCode}</span>`
+      : `Check your inbox at <strong>${pendingEmail}</strong> for the new code`;
+    toast(t("codeResent"));
+    startTimer();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("backEmailBtn").addEventListener("click", () => {
+  showScreen("screenEmail");
+  document.getElementById("emailInput").value = "";
+  document.getElementById("emailValidation").className = "validation-status";
+});
+
+document.getElementById("otpForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const code = Array.from(otpInputs).map(i => i.value).join("");
+  if (code.length !== 6) { toast(t("enterAllDigits")); return; }
+
+  try {
+    const data = await api("/auth/verify-otp", {
+      method: "POST",
+      body: JSON.stringify({ email: pendingEmail, code }),
+    });
+    clearInterval(timerInterval);
+    toast(t("emailVerified"));
+    await afterSignIn(data);
+  } catch (err) {
+    toast(err.message);
+    otpInputs.forEach(i => i.value = "");
+    otpInputs[0].focus();
+  }
+});
+
+/* ========== POST SIGN-IN ROUTING ========== */
+async function afterSignIn(authData) {
+  if (authData.district) currentDistrict = authData.district;
+
+  if (authData.needsProfile) {
+    buildCropGrid();
+    populateDistrictSelects(currentDistrict);
+    document.getElementById("farmerNameInput").value = authData.name || "";
+    showScreen("screenCrop");
+    return;
+  }
+
+  await loadDashboard();
+}
+
+/* ========== PROFILE + CROP SELECTION ========== */
+document.getElementById("continueBtn").addEventListener("click", async () => {
+  const name = document.getElementById("farmerNameInput").value.trim();
+  const district = document.getElementById("districtSelect").value;
+
+  if (!name) { toast(t("enterName")); return; }
+  if (selectedCrops.length === 0) { toast(t("selectCrop")); return; }
+
+  try {
+    await api("/profile", { method: "POST", body: JSON.stringify({ name, district }) });
+    await api("/subscriptions", { method: "POST", body: JSON.stringify({ crops: selectedCrops }) });
+    currentDistrict = district;
+    await loadDashboard();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("addCropBtn").addEventListener("click", () => {
+  buildCropGrid();
+  selectedCrops.forEach(c => {
+    const card = document.querySelector(`.crop-card[data-crop="${c}"]`);
+    if (card) card.classList.add("selected");
+  });
+  renderCustomCropTags();
+  populateDistrictSelects(currentDistrict);
+  showScreen("screenCrop");
+});
+
+/* ========== DASHBOARD ========== */
+async function loadDashboard() {
+  showScreen("screenDash");
+  document.getElementById("dashDate").textContent = t("todaysMarket");
+
+  try {
+    const profile = await api("/profile");
+    document.getElementById("greeting").textContent = profile.name ? `${t("goodMorning")}, ${profile.name}` : t("greetingDefault");
+    document.getElementById("userEmail").textContent = profile.email || pendingEmail || "";
+    if (profile.district) currentDistrict = profile.district;
+  } catch { /* keep defaults */ }
+
+  populateDistrictSelects(currentDistrict);
+
+  try {
+    const subs = await api("/subscriptions");
+    selectedCrops = subs.crops && subs.crops.length ? subs.crops : ["Tomato"];
+  } catch {
+    selectedCrops = selectedCrops.length ? selectedCrops : ["Tomato"];
+  }
+
+  renderCropTabs(selectedCrops);
+  activeCrop = selectedCrops[0];
+  await renderPrices(activeCrop);
+}
+
+function renderCropTabs(crops) {
+  const container = document.getElementById("cropTabs");
+  container.innerHTML = "";
+  crops.forEach(crop => {
+    const tab = document.createElement("button");
+    tab.className = `crop-tab ${crop === activeCrop ? "active" : ""}`;
+    tab.innerHTML = `<span>${getCropEmoji(crop)}</span> <span>${crop}</span>`;
+    tab.addEventListener("click", async () => {
+      activeCrop = crop;
+      renderCropTabs(crops);
+      await renderPrices(crop);
+    });
+    container.appendChild(tab);
+  });
+}
+
+async function renderPrices(crop) {
+  const list = document.getElementById("priceList");
+  list.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:40px 0;">${t("loadingPrices")}</p>`;
+
+  try {
+    const mandis = await api(`/prices/nearest?crop=${encodeURIComponent(crop)}&limit=3&district=${encodeURIComponent(currentDistrict)}`);
+    list.innerHTML = "";
+    mandis.forEach((m, i) => list.appendChild(createPriceCard(m, i === 0)));
+  } catch (err) {
+    list.innerHTML = `<p style="text-align:center; color:var(--alert-red); padding:40px 0;">${err.message}</p>`;
+  }
+}
+
+function createPriceCard(mandi, isBest) {
+  const card = document.createElement("div");
+  const trend = mandi.trend || "flat";
+  card.className = `price-card ${isBest ? "high-price" : ""}`;
+
+  const trendText = trend === "up" ? t("rising") : trend === "down" ? t("falling") : t("noChange");
+  const trendIcon = trend === "up" ? "📈" : trend === "down" ? "📉" : "➡️";
+  const trendClass = trend === "up" ? "trend-up" : trend === "down" ? "trend-down" : "trend-flat";
+  const ratingHtml = mandi.avgRating
+    ? `<span style="margin-left:8px;">★ ${mandi.avgRating} (${mandi.ratingCount})</span>` : "";
+  const estimatedHtml = mandi.estimated
+    ? `<div class="price-badge" style="background:rgba(107,142,127,0.15); color:var(--sage);">${t("estimated")}</div>` : "";
+
+  card.innerHTML = `
+    <div class="price-header">
+      <div class="mandi-info">
+        <h3>${mandi.name}</h3>
+        <div class="mandi-location">
+          <i class="ti ti-map-pin"></i> ${mandi.district}, ${t("tamilNadu")} ${ratingHtml}
+        </div>
+      </div>
+      ${isBest && !mandi.estimated ? `<div class="price-badge">${t("bestPrice")}</div>` : estimatedHtml}
+    </div>
+    <div class="price-main">
+      <span class="price-value">₹${Math.round(mandi.price).toLocaleString("en-IN")}</span>
+      <span class="price-unit">${t("perQuintal")}</span>
+    </div>
+    <div class="price-footer">
+      <div class="trend-indicator ${trendClass}">
+        ${trendIcon} ${trendText} ${mandi.trendPct ? mandi.trendPct + "%" : ""}
+      </div>
+      <button class="sound-btn" aria-label="Listen to price">
+        <i class="ti ti-volume"></i>
+      </button>
+    </div>
+  `;
+
+  card.querySelector(".sound-btn").addEventListener("click", () => speakPrice(mandi));
+  return card;
+}
+
+function speakPrice(mandi) {
+  if (!("speechSynthesis" in window)) return;
+  const sentence = `${mandi.name}, price ${Math.round(mandi.price)} rupees per quintal`;
+  const utter = new SpeechSynthesisUtterance(sentence);
+  utter.lang = "en-IN";
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
+}
+
+/* ========== ADD CROP DIRECTLY FROM DASHBOARD ========== */
+document.getElementById("dashAddCropBtn").addEventListener("click", async () => {
+  const input = document.getElementById("dashCropSearchInput");
+  const value = input.value.trim();
+  if (!value) { toast(t("typeCropFirst")); return; }
+  const display = displayCropName(value);
+
+  try {
+    await api("/subscriptions", { method: "POST", body: JSON.stringify({ crops: [display] }) });
+    if (!selectedCrops.includes(display)) selectedCrops.push(display);
+    activeCrop = display;
+    renderCropTabs(selectedCrops);
+    await renderPrices(display);
+    toast(`${t("showingPricesFor")} ${display}`);
+    input.value = "";
+  } catch (err) {
+    toast(err.message);
+  }
+});
+document.getElementById("dashCropSearchInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); document.getElementById("dashAddCropBtn").click(); }
+});
+
+document.getElementById("dashDistrictSelect").addEventListener("change", (e) => {
+  currentDistrict = e.target.value;
+  if (activeCrop) renderPrices(activeCrop);
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try { await api("/auth/logout", { method: "POST" }); } catch { /* ignore */ }
+  // Note: logging out only clears the session — this device stays
+  // "remembered" server-side, so re-entering the same email next time
+  // signs back in without another OTP.
+  location.reload();
+});
+
+document.getElementById("langToggle").addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  localStorage.setItem("lang", currentLang);
+  applyTranslations();
+  // Re-render anything built dynamically in JS so it picks up the new language too.
+  if (!document.getElementById("screenDash").classList.contains("hidden")) {
+    document.getElementById("dashDate").textContent = t("todaysMarket");
+    if (activeCrop) renderPrices(activeCrop);
+  }
+  if (timerInterval) {
+    // restart the label prefix without resetting the countdown itself
+    const display = document.getElementById("timerDisplay");
+    const match = display.textContent.match(/(\d+:\d{2})/);
+    if (match) display.textContent = `${t("expiresIn")} ${match[1]}`;
+  }
+});
+document.getElementById("langToggle").value = currentLang;
+
+/* ========== UTILITIES ========== */
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  document.getElementById(screenId).classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+function toast(message) {
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.textContent = message;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+function startTimer() {
+  let remaining = 300; // OTP_TTL_MINUTES = 5 on the backend
+  const display = document.getElementById("timerDisplay");
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    remaining--;
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    display.textContent = `${t("expiresIn")} ${mins}:${String(secs).padStart(2, "0")}`;
+    if (remaining <= 60) display.classList.add("urgent");
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById("otpForm").querySelector(".btn-primary").disabled = true;
+    }
+  }, 1000);
+}
+
+/* ========== CHANGE EMAIL ========== */
+document.getElementById("toggleEmailChangeBtn").addEventListener("click", () => {
+  document.getElementById("emailChangePanel").classList.toggle("hidden");
+});
+
+document.getElementById("sendEmailChangeBtn").addEventListener("click", async () => {
+  const input = document.getElementById("newEmailInput");
+  const newEmail = input.value.trim().toLowerCase();
+  if (!newEmail) { toast(t("enterNewEmail")); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) { toast(t("invalidEmailFormat")); return; }
+
+  try {
+    const data = await api("/profile/email/request-change", {
+      method: "POST",
+      body: JSON.stringify({ newEmail }),
+    });
+    toast(data.devModeCode ? `${t("emailChangeCodeSent")} — demo code: ${data.devModeCode}` : t("emailChangeCodeSent"));
+    document.getElementById("emailChangeOtpRow").classList.remove("hidden");
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("confirmEmailChangeBtn").addEventListener("click", async () => {
+  const code = document.getElementById("emailChangeCodeInput").value.trim();
+  if (code.length !== 6) { toast(t("enterAllDigits")); return; }
+  try {
+    const data = await api("/profile/email/confirm-change", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
+    toast(t("emailUpdated"));
+    document.getElementById("userEmail").textContent = data.email;
+    document.getElementById("emailChangePanel").classList.add("hidden");
+    document.getElementById("emailChangeOtpRow").classList.add("hidden");
+    document.getElementById("newEmailInput").value = "";
+    document.getElementById("emailChangeCodeInput").value = "";
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("cancelEmailChangeBtn").addEventListener("click", () => {
+  document.getElementById("emailChangeOtpRow").classList.add("hidden");
+  document.getElementById("emailChangePanel").classList.add("hidden");
+  document.getElementById("newEmailInput").value = "";
+  document.getElementById("emailChangeCodeInput").value = "";
+});
+
+/* ========== INIT — is there already a live session? ========== */
+(async function init() {
+  applyTranslations();
+  populateDistrictSelects(currentDistrict);
+  buildCropGrid();
+
+  try {
+    const session = await api("/auth/session");
+    if (session.signedIn) {
+      pendingEmail = session.email;
+      await loadDashboard();
+    }
+  } catch {
+    // no session / server not reachable yet — stay on the email screen
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandi Vilai — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest-deep: #1F3A34;
+  --terracotta: #C15C3B;
+  --sand: #F5F1ED;
+  --cream: #FAFAF8;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --border-color: #E5E5E5;
+  --alert-red: #9B4B3C;
+  --success-green: #2D5A47;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --transition: all 0.2s ease;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, #FAFAF8 0%, #F5F1ED 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.topbar {
+  background: linear-gradient(135deg, var(--forest-deep) 0%, #1a2f2a 100%);
+  color: white;
+  padding: 18px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar .brand {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar button {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== LOGIN SCREEN ===== */
+#loginScreen {
+  max-width: 380px;
+  margin: 90px auto;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-md);
+}
+
+#loginScreen h1 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+#loginScreen p.sub {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.field input, .field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-family: var(--font-body);
+}
+
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--terracotta);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--forest-deep) 0%, #2a3f38 100%);
+  color: white;
+  width: 100%;
+}
+
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.btn-danger { background: rgba(155,75,60,0.1); color: var(--alert-red); }
+.btn-danger:hover { background: rgba(155,75,60,0.18); }
+
+.btn-outline {
+  background: white;
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+.btn-outline:hover { border-color: var(--terracotta); }
+
+.error-msg {
+  color: var(--alert-red);
+  font-size: 13px;
+  margin-top: 10px;
+  display: none;
+}
+
+/* ===== MAIN APP ===== */
+#appScreen { display: none; padding: 28px; max-width: 1100px; margin: 0 auto; }
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 10px 18px;
+  border-radius: 50px;
+  border: 2px solid var(--border-color);
+  background: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.tab-btn.active {
+  background: var(--forest-deep);
+  color: white;
+  border-color: transparent;
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.panel-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.panel-card h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.add-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  align-items: flex-end;
+}
+
+.add-row .field { margin-bottom: 0; flex: 1; min-width: 140px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th { color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+
+tr:hover td { background: rgba(193,92,59,0.04); }
+
+td input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.row-actions { display: flex; gap: 6px; }
+.row-actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+.row-actions button.save { color: var(--success-green); }
+.row-actions button.delete { color: var(--alert-red); }
+
+.empty-note { color: var(--text-secondary); font-size: 14px; padding: 12px 0; }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--forest-deep);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  box-shadow: var(--shadow-md);
+  z-index: 999;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">🌾 Mandi Vilai — Admin</div>
+  <button id="adminLogoutBtn" style="display:none;">Sign out</button>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <h1>Admin sign in</h1>
+  <p class="sub">Manage crops, mandis, prices and farmer accounts.</p>
+  <form id="adminLoginForm">
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="adminUsername" autocomplete="username" required />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="adminPassword" autocomplete="current-password" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+    <p class="error-msg" id="loginError"></p>
+  </form>
+  <p style="text-align:center; margin-top:18px;"><a href="/" style="font-size:13px; color:var(--text-secondary);">← Back to farmer app</a></p>
+</div>
+
+<!-- MAIN APP -->
+<div id="appScreen">
+  <div class="tabs">
+    <button class="tab-btn active" data-panel="cropsPanel">Crops</button>
+    <button class="tab-btn" data-panel="mandisPanel">Mandis</button>
+    <button class="tab-btn" data-panel="pricesPanel">Prices</button>
+    <button class="tab-btn" data-panel="farmersPanel">Farmers</button>
+  </div>
+
+  <!-- CROPS -->
+  <div class="panel active" id="cropsPanel">
+    <div class="panel-card">
+      <h2>Add a crop</h2>
+      <div class="add-row">
+        <div class="field">
+          <label>Crop name</label>
+          <input type="text" id="newCropName" placeholder="e.g. Tomato" />
+        </div>
+        <button class="btn btn-primary" id="addCropBtn" style="width:auto;">Add crop</button>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th></th></tr></thead>
+        <tbody id="cropsTableBody"></tbody>
+      </table>
+      <p class="empty-note" id="cropsEmptyNote" style="display:none;">No crops yet.</p>
+    </div>
+  </div>
+
+  <!-- MANDIS -->
+  <div class="panel" id="mandisPanel">
+    <div class="panel-card">
+      <h2>Add a mandi (market)</h2>
+      <div class="add-row">
+        <div class="field">
+          <label>Mandi name</label>
+          <input type="text" id="newMandiName" placeholder="e.g. Koyambedu Market" />
+        </div>
+        <div class="field">
+          <label>District</label>
+          <select id="newMandiDistrict"></select>
+        </div>
+        <button class="btn btn-primary" id="addMandiBtn" style="width:auto;">Add mandi</button>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>District</th><th></th></tr></thead>
+        <tbody id="mandisTableBody"></tbody>
+      </table>
+      <p class="empty-note" id="mandisEmptyNote" style="display:none;">No mandis yet.</p>
+    </div>
+  </div>
+
+  <!-- PRICES -->
+  <div class="panel" id="pricesPanel">
+    <div class="panel-card">
+      <h2>Set / update a price</h2>
+      <div class="add-row">
+        <div class="field">
+          <label>Crop</label>
+          <select id="priceCropSelect"></select>
+        </div>
+        <div class="field">
+          <label>Mandi</label>
+          <select id="priceMandiSelect"></select>
+        </div>
+        <div class="field">
+          <label>Price (₹ / quintal)</label>
+          <input type="number" id="priceValueInput" min="1" step="0.01" placeholder="e.g. 1450" />
+        </div>
+        <button class="btn btn-primary" id="savePriceBtn" style="width:auto;">Save price</button>
+      </div>
+      <table>
+        <thead><tr><th>Crop</th><th>Mandi</th><th>District</th><th>Price</th><th>Date</th><th></th></tr></thead>
+        <tbody id="pricesTableBody"></tbody>
+      </table>
+      <p class="empty-note" id="pricesEmptyNote" style="display:none;">No prices recorded yet.</p>
+    </div>
+  </div>
+
+  <!-- FARMERS -->
+  <div class="panel" id="farmersPanel">
+    <div class="panel-card">
+      <h2>Registered farmers</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>District</th><th>Crops tracked</th><th></th></tr></thead>
+        <tbody id="farmersTableBody"></tbody>
+      </table>
+      <p class="empty-note" id="farmersEmptyNote" style="display:none;">No farmers registered yet.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = "/api";
+
+const TN_PLACES = [
+  "Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli",
+  "Vellore", "Erode", "Thanjavur", "Dindigul", "Cuddalore", "Kanchipuram",
+  "Karur", "Namakkal", "Virudhunagar", "Thoothukudi", "Kanyakumari", "Krishnagiri",
+  "Dharmapuri", "Villupuram", "Pudukkottai", "Ramanathapuram", "Theni", "Ariyalur",
+  "Perambalur", "The Nilgiris (Ooty)", "Sivagangai", "Tiruvannamalai", "Nagapattinam",
+  "Tiruvarur", "Tenkasi", "Tirupathur", "Ranipet", "Chengalpattu", "Kallakurichi",
+  "Mayiladuthurai", "Hosur",
+];
+
+async function api(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
+  let data = {};
+  try { data = await res.json(); } catch { /* no body */ }
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  return data;
+}
+
+function toast(msg) {
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+/* ===== LOGIN ===== */
+document.getElementById("adminLoginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value;
+  const errEl = document.getElementById("loginError");
+  errEl.style.display = "none";
+  try {
+    await api("/admin/login", { method: "POST", body: JSON.stringify({ username, password }) });
+    enterApp();
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.style.display = "block";
+  }
+});
+
+document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
+  try { await api("/admin/logout", { method: "POST" }); } catch { /* ignore */ }
+  location.reload();
+});
+
+function enterApp() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("appScreen").style.display = "block";
+  document.getElementById("adminLogoutBtn").style.display = "inline-flex";
+  populateDistrictOptions();
+  loadCrops();
+  loadMandis();
+  loadFarmers();
+}
+
+function populateDistrictOptions() {
+  const html = TN_PLACES.map(p => `<option value="${p}">${p}</option>`).join("");
+  document.getElementById("newMandiDistrict").innerHTML = html;
+}
+
+/* ===== TABS ===== */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+    if (btn.dataset.panel === "pricesPanel") loadPrices();
+  });
+});
+
+/* ===== CROPS ===== */
+let cropsCache = [];
+
+async function loadCrops() {
+  try {
+    cropsCache = await api("/admin/crops");
+    const body = document.getElementById("cropsTableBody");
+    document.getElementById("cropsEmptyNote").style.display = cropsCache.length ? "none" : "block";
+    body.innerHTML = cropsCache.map(c => `
+      <tr data-id="${c.commodity_id}">
+        <td>${c.commodity_id}</td>
+        <td><input type="text" class="crop-name-input" value="${c.commodity_name}" /></td>
+        <td class="row-actions">
+          <button class="save" title="Save">💾</button>
+          <button class="delete" title="Delete">🗑️</button>
+        </td>
+      </tr>
+    `).join("");
+    populateCropSelect();
+  } catch (err) {
+    toast(err.message);
+  }
+}
+
+document.getElementById("addCropBtn").addEventListener("click", async () => {
+  const input = document.getElementById("newCropName");
+  const name = input.value.trim();
+  if (!name) { toast("Enter a crop name"); return; }
+  try {
+    await api("/admin/crops", { method: "POST", body: JSON.stringify({ name }) });
+    input.value = "";
+    toast("Crop added");
+    loadCrops();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("cropsTableBody").addEventListener("click", async (e) => {
+  const row = e.target.closest("tr");
+  if (!row) return;
+  const id = row.dataset.id;
+
+  if (e.target.classList.contains("save")) {
+    const name = row.querySelector(".crop-name-input").value.trim();
+    if (!name) { toast("Name can't be empty"); return; }
+    try {
+      await api(`/admin/crops/${id}`, { method: "PUT", body: JSON.stringify({ name }) });
+      toast("Crop updated");
+      loadCrops();
+    } catch (err) { toast(err.message); }
+  }
+
+  if (e.target.classList.contains("delete")) {
+    if (!confirm("Delete this crop?")) return;
+    try {
+      await api(`/admin/crops/${id}`, { method: "DELETE" });
+      toast("Crop deleted");
+      loadCrops();
+    } catch (err) { toast(err.message); }
+  }
+});
+
+/* ===== MANDIS ===== */
+let mandisCache = [];
+
+async function loadMandis() {
+  try {
+    mandisCache = await api("/admin/mandis");
+    const body = document.getElementById("mandisTableBody");
+    document.getElementById("mandisEmptyNote").style.display = mandisCache.length ? "none" : "block";
+    body.innerHTML = mandisCache.map(m => `
+      <tr data-id="${m.mandi_id}">
+        <td>${m.mandi_id}</td>
+        <td><input type="text" class="mandi-name-input" value="${m.mandi_name}" /></td>
+        <td>
+          <select class="mandi-district-select">
+            ${TN_PLACES.map(p => `<option value="${p}" ${p === m.district ? "selected" : ""}>${p}</option>`).join("")}
+          </select>
+        </td>
+        <td class="row-actions">
+          <button class="save" title="Save">💾</button>
+          <button class="delete" title="Delete">🗑️</button>
+        </td>
+      </tr>
+    `).join("");
+    populateMandiSelect();
+  } catch (err) {
+    toast(err.message);
+  }
+}
+
+document.getElementById("addMandiBtn").addEventListener("click", async () => {
+  const nameInput = document.getElementById("newMandiName");
+  const name = nameInput.value.trim();
+  const district = document.getElementById("newMandiDistrict").value;
+  if (!name) { toast("Enter a mandi name"); return; }
+  try {
+    await api("/admin/mandis", { method: "POST", body: JSON.stringify({ name, district }) });
+    nameInput.value = "";
+    toast("Mandi added");
+    loadMandis();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("mandisTableBody").addEventListener("click", async (e) => {
+  const row = e.target.closest("tr");
+  if (!row) return;
+  const id = row.dataset.id;
+
+  if (e.target.classList.contains("save")) {
+    const name = row.querySelector(".mandi-name-input").value.trim();
+    const district = row.querySelector(".mandi-district-select").value;
+    try {
+      await api(`/admin/mandis/${id}`, { method: "PUT", body: JSON.stringify({ name, district }) });
+      toast("Mandi updated");
+      loadMandis();
+    } catch (err) { toast(err.message); }
+  }
+
+  if (e.target.classList.contains("delete")) {
+    if (!confirm("Delete this mandi?")) return;
+    try {
+      await api(`/admin/mandis/${id}`, { method: "DELETE" });
+      toast("Mandi deleted");
+      loadMandis();
+    } catch (err) { toast(err.message); }
+  }
+});
+
+/* ===== PRICES ===== */
+function populateCropSelect() {
+  const sel = document.getElementById("priceCropSelect");
+  sel.innerHTML = cropsCache.map(c => `<option value="${c.commodity_id}">${c.commodity_name}</option>`).join("");
+}
+
+function populateMandiSelect() {
+  const sel = document.getElementById("priceMandiSelect");
+  sel.innerHTML = mandisCache.map(m => `<option value="${m.mandi_id}">${m.mandi_name} (${m.district})</option>`).join("");
+}
+
+async function loadPrices() {
+  try {
+    const prices = await api("/admin/prices");
+    const body = document.getElementById("pricesTableBody");
+    document.getElementById("pricesEmptyNote").style.display = prices.length ? "none" : "block";
+    body.innerHTML = prices.map(p => `
+      <tr data-id="${p.price_id}">
+        <td>${p.commodity_name}</td>
+        <td>${p.mandi_name}</td>
+        <td>${p.district}</td>
+        <td><input type="number" class="price-value-input" value="${p.modal_price}" step="0.01" /></td>
+        <td>${p.price_date}</td>
+        <td class="row-actions">
+          <button class="save" title="Save">💾</button>
+          <button class="delete" title="Delete">🗑️</button>
+        </td>
+      </tr>
+    `).join("");
+  } catch (err) {
+    toast(err.message);
+  }
+}
+
+document.getElementById("savePriceBtn").addEventListener("click", async () => {
+  const commodity_id = document.getElementById("priceCropSelect").value;
+  const mandi_id = document.getElementById("priceMandiSelect").value;
+  const price = document.getElementById("priceValueInput").value;
+  if (!commodity_id || !mandi_id) { toast("Add a crop and mandi first"); return; }
+  if (!price || Number(price) <= 0) { toast("Enter a valid price"); return; }
+  try {
+    await api("/admin/prices", { method: "POST", body: JSON.stringify({ commodity_id, mandi_id, price }) });
+    document.getElementById("priceValueInput").value = "";
+    toast("Price saved");
+    loadPrices();
+  } catch (err) {
+    toast(err.message);
+  }
+});
+
+document.getElementById("pricesTableBody").addEventListener("click", async (e) => {
+  const row = e.target.closest("tr");
+  if (!row) return;
+  const id = row.dataset.id;
+
+  if (e.target.classList.contains("save")) {
+    const price = row.querySelector(".price-value-input").value;
+    try {
+      await api(`/admin/prices/${id}`, { method: "PUT", body: JSON.stringify({ price }) });
+      toast("Price updated");
+      loadPrices();
+    } catch (err) { toast(err.message); }
+  }
+
+  if (e.target.classList.contains("delete")) {
+    if (!confirm("Delete this price row?")) return;
+    try {
+      await api(`/admin/prices/${id}`, { method: "DELETE" });
+      toast("Price deleted");
+      loadPrices();
+    } catch (err) { toast(err.message); }
+  }
+});
+
+/* ===== FARMERS ===== */
+async function loadFarmers() {
+  try {
+    const farmers = await api("/admin/farmers");
+    const body = document.getElementById("farmersTableBody");
+    document.getElementById("farmersEmptyNote").style.display = farmers.length ? "none" : "block";
+    body.innerHTML = farmers.map(f => `
+      <tr data-id="${f.farmer_id}">
+        <td>${f.farmer_id}</td>
+        <td>${f.name || "—"}</td>
+        <td>${f.email}</td>
+        <td>${f.district || "—"}</td>
+        <td>${f.crop_count}</td>
+        <td class="row-actions"><button class="delete" title="Delete">🗑️</button></td>
+      </tr>
+    `).join("");
+  } catch (err) {
+    toast(err.message);
+  }
+}
+
+document.getElementById("farmersTableBody").addEventListener("click", async (e) => {
+  const row = e.target.closest("tr");
+  if (!row) return;
+  const id = row.dataset.id;
+  if (e.target.classList.contains("delete")) {
+    if (!confirm("Delete this farmer's account? This cannot be undone.")) return;
+    try {
+      await api(`/admin/farmers/${id}`, { method: "DELETE" });
+      toast("Farmer deleted");
+      loadFarmers();
+    } catch (err) { toast(err.message); }
+  }
+});
+
+/* ===== INIT — already signed in? ===== */
+(async function init() {
+  try {
+    const session = await api("/admin/session");
+    if (session.signedIn) enterApp();
+  } catch { /* stay on login screen */ }
+})();
+</script>
+</body>
+</html>
